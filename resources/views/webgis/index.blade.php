@@ -26,7 +26,7 @@
                     <select class="form-select form-select-sm" id="filterProvince">
                         <option value="">-- Seluruh Indonesia (38 Provinsi) --</option>
                         @foreach($provinces as $prov)
-                            <option value="{{ $prov->id }}" data-lat="{{ $prov->latitude }}" data-lng="{{ $prov->longitude }}" data-zoom="{{ $prov->zoom_level }}">
+                            <option value="{{ $prov->encrypted_id }}" data-lat="{{ $prov->latitude }}" data-lng="{{ $prov->longitude }}" data-zoom="{{ $prov->zoom_level }}">
                                 {{ $prov->name }}
                             </option>
                         @endforeach

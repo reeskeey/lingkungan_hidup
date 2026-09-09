@@ -34,7 +34,8 @@ class WebGisController extends Controller
      */
     public function apiGeoData(Request $request)
     {
-        $provinceId = $request->query('province_id') ? (int) $request->query('province_id') : null;
+        $rawProvinceId = $request->query('province_id');
+        $provinceId = $rawProvinceId ? (\App\Support\UrlCrypt::decodeId($rawProvinceId) ?? (is_numeric($rawProvinceId) ? (int)$rawProvinceId : null)) : null;
         $fasyankesType = $request->query('fasyankes_type') ?: null;
         $gapStatus = $request->query('gap_status') ?: null;
 

@@ -6,13 +6,16 @@ use Illuminate\Http\Request;
 use App\Models\TransferLocation;
 use App\Models\Province;
 use App\Models\Regency;
+use App\Support\UrlCrypt;
 
 class TransferLocationController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->query('search');
-        $provinceId = $request->query('province_id');
+        $rawProvinceId = $request->query('province_id');
+
+        $provinceId = $rawProvinceId ? (UrlCrypt::decodeId($rawProvinceId) ?? (is_numeric($rawProvinceId) ? (int)$rawProvinceId : null)) : null;
 
         $query = TransferLocation::with(['province:id,name', 'regency:id,name'])
             ->orderBy('name', 'asc');
@@ -27,7 +30,7 @@ class TransferLocationController extends Controller
         $locations = $query->paginate(15)->withQueryString();
         $provinces = Province::orderBy('name', 'asc')->get();
 
-        return view('transfer-locations.index', compact('locations', 'provinces', 'search', 'provinceId'));
+        return view('transfer-locations.index', compact('locations', 'provinces', 'search', 'provinceId', 'rawProvinceId'));
     }
 
     public function create()
@@ -39,6 +42,15 @@ class TransferLocationController extends Controller
 
     public function store(Request $request)
     {
+        $input = $request->all();
+        if (isset($input['province_id'])) {
+            $input['province_id'] = UrlCrypt::decodeId($input['province_id']) ?? $input['province_id'];
+        }
+        if (isset($input['regency_id'])) {
+            $input['regency_id'] = UrlCrypt::decodeId($input['regency_id']) ?? $input['regency_id'];
+        }
+        $request->merge($input);
+
         $validated = $request->validate([
             'name' => 'required|string|max:200',
             'province_id' => 'required|exists:provinces,id',

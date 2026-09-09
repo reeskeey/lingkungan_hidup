@@ -47,7 +47,7 @@
                     <select name="province_id" class="form-select form-select-sm">
                         <option value="">-- Semua Provinsi --</option>
                         @foreach($provinces as $prov)
-                            <option value="{{ $prov->id }}" {{ $provinceId == $prov->id ? 'selected' : '' }}>{{ $prov->name }}</option>
+                            <option value="{{ $prov->encrypted_id }}" {{ ($provinceId == $prov->id || (isset($rawProvinceId) && $rawProvinceId === $prov->encrypted_id)) ? 'selected' : '' }}>{{ $prov->name }}</option>
                         @endforeach
                     </select>
                 </div>

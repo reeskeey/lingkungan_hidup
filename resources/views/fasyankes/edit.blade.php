@@ -15,7 +15,7 @@
 
     <div class="card shadow-sm border-0">
         <div class="card-body p-4">
-            <form action="{{ route('fasyankes.update', $fasyankes->id) }}" method="POST">
+            <form action="{{ route('fasyankes.update', $fasyankes) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="row g-3">
@@ -38,18 +38,18 @@
 
                     <div class="col-12 col-md-6">
                         <label class="form-label small fw-semibold">Provinsi <span class="text-danger">*</span></label>
-                        <select name="province_id" class="form-select form-select-sm" required>
+                        <select name="province_id" id="province_id" class="form-select form-select-sm" required>
                             @foreach($provinces as $prov)
-                                <option value="{{ $prov->id }}" {{ old('province_id', $fasyankes->province_id) == $prov->id ? 'selected' : '' }}>{{ $prov->name }}</option>
+                                <option value="{{ $prov->encrypted_id }}" data-prov-id="{{ $prov->id }}" {{ (old('province_id', $fasyankes->province_id) == $prov->id || old('province_id') === $prov->encrypted_id) ? 'selected' : '' }}>{{ $prov->name }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label class="form-label small fw-semibold">Kabupaten / Kota <span class="text-danger">*</span></label>
-                        <select name="regency_id" class="form-select form-select-sm" required>
+                        <select name="regency_id" id="regency_id" class="form-select form-select-sm" required>
                             @foreach($regencies as $reg)
-                                <option value="{{ $reg->id }}" {{ old('regency_id', $fasyankes->regency_id) == $reg->id ? 'selected' : '' }}>{{ $reg->name }}</option>
+                                <option value="{{ $reg->encrypted_id }}" data-prov-id="{{ $reg->province_id }}" {{ (old('regency_id', $fasyankes->regency_id) == $reg->id || old('regency_id') === $reg->encrypted_id) ? 'selected' : '' }}>{{ $reg->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -108,4 +108,31 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const provSelect = document.getElementById('province_id');
+    const regSelect = document.getElementById('regency_id');
+    if (!provSelect || !regSelect) return;
+
+    const allRegOptions = Array.from(regSelect.options).slice(1);
+
+    function filterRegencies() {
+        const selectedOption = provSelect.options[provSelect.selectedIndex];
+        const selectedProvRawId = selectedOption ? selectedOption.getAttribute('data-prov-id') : null;
+
+        const currentVal = regSelect.value;
+        regSelect.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
+        allRegOptions.forEach(opt => {
+            if (!selectedProvRawId || opt.getAttribute('data-prov-id') === selectedProvRawId) {
+                const clone = opt.cloneNode(true);
+                if (clone.value === currentVal) clone.selected = true;
+                regSelect.appendChild(clone);
+            }
+        });
+    }
+
+    provSelect.addEventListener('change', filterRegencies);
+});
+</script>
 @endsection

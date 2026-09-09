@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasEncryptedRouteKey;
 
 class RoadmapAction extends Model
 {
+    use HasEncryptedRouteKey;
+
     protected $fillable = [
         'program_name',
         'baseline',

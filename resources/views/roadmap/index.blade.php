@@ -164,7 +164,7 @@
                                 <span class="fw-bold small">{{ $act->progress_percent }}%</span>
                                 @if(auth()->check())
                                 <button type="button" class="btn btn-sm btn-link p-0 text-primary" 
-                                        onclick="openProgressModal({{ $act->id }}, '{{ addslashes($act->program_name) }}', {{ $act->progress_percent }})"
+                                        onclick="openProgressModal('{{ $act->encrypted_id }}', '{{ addslashes($act->program_name) }}', {{ $act->progress_percent }})"
                                         title="Ubah Progres Status">
                                     <i class="bi bi-pencil-square fs-6"></i>
                                 </button>
@@ -177,7 +177,7 @@
                         </td>
                         @if(auth()->check() && auth()->user()->isSuperadmin())
                         <td class="text-center">
-                            <form action="{{ route('roadmap.destroy', $act->id) }}" method="POST" onsubmit="return confirm('Hapus program aksi ini?');" class="d-inline">
+                            <form action="{{ route('roadmap.destroy', $act) }}" method="POST" onsubmit="return confirm('Hapus program aksi ini?');" class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-outline-danger p-1" title="Hapus Aksi">

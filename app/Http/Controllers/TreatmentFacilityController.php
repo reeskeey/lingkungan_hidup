@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TreatmentFacility;
 use App\Models\Province;
 use App\Models\Regency;
+use App\Support\UrlCrypt;
 
 class TreatmentFacilityController extends Controller
 {
@@ -13,7 +14,9 @@ class TreatmentFacilityController extends Controller
     {
         $search = $request->query('search');
         $type = $request->query('type');
-        $provinceId = $request->query('province_id');
+        $rawProvinceId = $request->query('province_id');
+
+        $provinceId = $rawProvinceId ? (UrlCrypt::decodeId($rawProvinceId) ?? (is_numeric($rawProvinceId) ? (int)$rawProvinceId : null)) : null;
 
         $query = TreatmentFacility::with(['province:id,name', 'regency:id,name'])
             ->orderBy('name', 'asc');
@@ -31,7 +34,7 @@ class TreatmentFacilityController extends Controller
         $facilities = $query->paginate(15)->withQueryString();
         $provinces = Province::orderBy('name', 'asc')->get();
 
-        return view('treatment-facilities.index', compact('facilities', 'provinces', 'search', 'type', 'provinceId'));
+        return view('treatment-facilities.index', compact('facilities', 'provinces', 'search', 'type', 'provinceId', 'rawProvinceId'));
     }
 
     public function create()
@@ -43,6 +46,15 @@ class TreatmentFacilityController extends Controller
 
     public function store(Request $request)
     {
+        $input = $request->all();
+        if (isset($input['province_id'])) {
+            $input['province_id'] = UrlCrypt::decodeId($input['province_id']) ?? $input['province_id'];
+        }
+        if (isset($input['regency_id'])) {
+            $input['regency_id'] = UrlCrypt::decodeId($input['regency_id']) ?? $input['regency_id'];
+        }
+        $request->merge($input);
+
         $validated = $request->validate([
             'name' => 'required|string|max:200',
             'facility_type' => 'required|string',

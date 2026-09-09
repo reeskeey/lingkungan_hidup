@@ -54,7 +54,7 @@
                     <select name="province_id" class="form-select form-select-sm">
                         <option value="">-- Semua Provinsi --</option>
                         @foreach($provinces as $prov)
-                            <option value="{{ $prov->id }}" {{ $provinceId == $prov->id ? 'selected' : '' }}>{{ $prov->name }}</option>
+                            <option value="{{ $prov->encrypted_id }}" {{ ($provinceId == $prov->id || (isset($rawProvinceId) && $rawProvinceId === $prov->encrypted_id)) ? 'selected' : '' }}>{{ $prov->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -114,10 +114,10 @@
                         <td class="small text-muted">{{ $item->storage_method }}</td>
                         <td class="text-center">
                             <div class="btn-group btn-group-sm">
-                                <a href="{{ route('fasyankes.edit', $item->id) }}" class="btn btn-outline-primary" title="Edit Data">
+                                <a href="{{ route('fasyankes.edit', $item) }}" class="btn btn-outline-primary" title="Edit Data">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <form action="{{ route('fasyankes.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Hapus data Fasyankes ini?');" class="d-inline">
+                                <form action="{{ route('fasyankes.destroy', $item) }}" method="POST" onsubmit="return confirm('Hapus data Fasyankes ini?');" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-outline-danger" title="Hapus Data">

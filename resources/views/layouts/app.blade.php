@@ -129,6 +129,14 @@
 
     <!-- Main Content -->
     <main class="flex-grow-1">
+        @if(session('error'))
+        <div class="container-fluid px-4 pt-3">
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        @endif
         @yield('content')
     </main>
 

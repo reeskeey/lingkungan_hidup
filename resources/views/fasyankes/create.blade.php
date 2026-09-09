@@ -51,7 +51,7 @@
                         <select name="province_id" id="province_id" class="form-select form-select-sm" required>
                             <option value="">-- Pilih Provinsi --</option>
                             @foreach($provinces as $prov)
-                                <option value="{{ $prov->id }}" {{ old('province_id') == $prov->id ? 'selected' : '' }}>{{ $prov->name }}</option>
+                                <option value="{{ $prov->encrypted_id }}" data-prov-id="{{ $prov->id }}" {{ (old('province_id') == $prov->id || old('province_id') === $prov->encrypted_id) ? 'selected' : '' }}>{{ $prov->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -61,7 +61,7 @@
                         <select name="regency_id" id="regency_id" class="form-select form-select-sm" required>
                             <option value="">-- Pilih Kabupaten/Kota --</option>
                             @foreach($regencies as $reg)
-                                <option value="{{ $reg->id }}" data-prov="{{ $reg->province_id }}" {{ old('regency_id') == $reg->id ? 'selected' : '' }}>{{ $reg->name }}</option>
+                                <option value="{{ $reg->encrypted_id }}" data-prov-id="{{ $reg->province_id }}" {{ (old('regency_id') == $reg->id || old('regency_id') === $reg->encrypted_id) ? 'selected' : '' }}>{{ $reg->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -121,4 +121,28 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const provSelect = document.getElementById('province_id');
+    const regSelect = document.getElementById('regency_id');
+    if (!provSelect || !regSelect) return;
+
+    const allRegOptions = Array.from(regSelect.options).slice(1);
+
+    function filterRegencies() {
+        const selectedOption = provSelect.options[provSelect.selectedIndex];
+        const selectedProvRawId = selectedOption ? selectedOption.getAttribute('data-prov-id') : null;
+
+        regSelect.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
+        allRegOptions.forEach(opt => {
+            if (!selectedProvRawId || opt.getAttribute('data-prov-id') === selectedProvRawId) {
+                regSelect.appendChild(opt.cloneNode(true));
+            }
+        });
+    }
+
+    provSelect.addEventListener('change', filterRegencies);
+});
+</script>
 @endsection

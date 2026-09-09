@@ -7,14 +7,17 @@ use App\Models\Fasyankes;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\WasteGeneration;
+use App\Support\UrlCrypt;
 
 class FasyankesController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->query('search');
-        $provinceId = $request->query('province_id');
+        $rawProvinceId = $request->query('province_id');
         $type = $request->query('type');
+
+        $provinceId = $rawProvinceId ? (UrlCrypt::decodeId($rawProvinceId) ?? (is_numeric($rawProvinceId) ? (int)$rawProvinceId : null)) : null;
 
         $query = Fasyankes::with(['province:id,name', 'regency:id,name', 'latestWasteGeneration'])
             ->orderBy('name', 'asc');
@@ -32,7 +35,7 @@ class FasyankesController extends Controller
         $fasyankesList = $query->paginate(15)->withQueryString();
         $provinces = Province::orderBy('name', 'asc')->get();
 
-        return view('fasyankes.index', compact('fasyankesList', 'provinces', 'search', 'provinceId', 'type'));
+        return view('fasyankes.index', compact('fasyankesList', 'provinces', 'search', 'provinceId', 'rawProvinceId', 'type'));
     }
 
     public function create()
@@ -45,6 +48,15 @@ class FasyankesController extends Controller
 
     public function store(Request $request)
     {
+        $input = $request->all();
+        if (isset($input['province_id'])) {
+            $input['province_id'] = UrlCrypt::decodeId($input['province_id']) ?? $input['province_id'];
+        }
+        if (isset($input['regency_id'])) {
+            $input['regency_id'] = UrlCrypt::decodeId($input['regency_id']) ?? $input['regency_id'];
+        }
+        $request->merge($input);
+
         $validated = $request->validate([
             'name' => 'required|string|max:200',
             'type' => 'required|string|max:50',
@@ -99,6 +111,15 @@ class FasyankesController extends Controller
 
     public function update(Request $request, Fasyankes $fasyanke)
     {
+        $input = $request->all();
+        if (isset($input['province_id'])) {
+            $input['province_id'] = UrlCrypt::decodeId($input['province_id']) ?? $input['province_id'];
+        }
+        if (isset($input['regency_id'])) {
+            $input['regency_id'] = UrlCrypt::decodeId($input['regency_id']) ?? $input['regency_id'];
+        }
+        $request->merge($input);
+
         $validated = $request->validate([
             'name' => 'required|string|max:200',
             'type' => 'required|string|max:50',

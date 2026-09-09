@@ -65,7 +65,7 @@ class AuthenticationAndAuthorizationTest extends TestCase
         $action = RoadmapAction::first();
         $this->assertNotNull($action);
 
-        $response = $this->actingAs($user)->patch("/roadmap/{$action->id}/progress", [
+        $response = $this->actingAs($user)->patch(route('roadmap.progress', $action), [
             'progress_percent' => 85,
         ]);
 

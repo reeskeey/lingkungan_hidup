@@ -29,7 +29,7 @@ class GeoSpatialService
         $fasyankesList = $fasyankesQuery->get()->map(function ($item) {
             $waste = $item->latestWasteGeneration;
             return [
-                'id' => $item->id,
+                'id' => $item->encrypted_id,
                 'name' => $item->name,
                 'type' => $item->type,
                 'province' => $item->province->name ?? '',
@@ -56,7 +56,7 @@ class GeoSpatialService
 
         $treatmentFacilities = $facilityQuery->get()->map(function ($fac) {
             return [
-                'id' => $fac->id,
+                'id' => $fac->encrypted_id,
                 'name' => $fac->name,
                 'type' => $fac->facility_type,
                 'category' => $fac->operator_category,
@@ -82,7 +82,7 @@ class GeoSpatialService
 
         $transferLocations = $transferQuery->get()->map(function ($loc) {
             return [
-                'id' => $loc->id,
+                'id' => $loc->encrypted_id,
                 'name' => $loc->name,
                 'province' => $loc->province->name ?? '',
                 'regency' => $loc->regency->name ?? '',
@@ -100,7 +100,7 @@ class GeoSpatialService
         $provinces = Province::with(['capacityGap'])->get()->map(function ($prov) {
             $gap = $prov->capacityGap->first();
             return [
-                'id' => $prov->id,
+                'id' => $prov->encrypted_id,
                 'code' => $prov->code,
                 'name' => $prov->name,
                 'lat' => (float) $prov->latitude,
