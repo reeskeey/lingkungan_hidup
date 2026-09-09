@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             TransferLocationSeeder::class,
             RegionalGapSeeder::class,
             RoadmapActionSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

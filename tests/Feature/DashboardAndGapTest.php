@@ -27,7 +27,8 @@ class DashboardAndGapTest extends TestCase
 
     public function test_gap_analysis_page_returns_ok_with_table(): void
     {
-        $response = $this->get('/gap-analysis');
+        $user = \App\Models\User::first();
+        $response = $this->actingAs($user)->get('/gap-analysis');
         $response->assertStatus(200);
         $response->assertSee('Analisis Kesenjangan Kapasitas Pengolahan');
         $response->assertSee('Neraca Wilayah Provinsi');
@@ -35,7 +36,8 @@ class DashboardAndGapTest extends TestCase
 
     public function test_gap_analysis_filters_by_island_and_status(): void
     {
-        $response = $this->get('/gap-analysis?island=jawa&status=Surplus');
+        $user = \App\Models\User::first();
+        $response = $this->actingAs($user)->get('/gap-analysis?island=jawa&status=Surplus');
         $response->assertStatus(200);
     }
 }

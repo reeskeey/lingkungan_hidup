@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Fasyankes;
@@ -22,13 +23,15 @@ class MasterDataCrudTest extends TestCase
 
     public function test_fasyankes_index_displays_data(): void
     {
-        $response = $this->get('/fasyankes');
+        $user = User::first();
+        $response = $this->actingAs($user)->get('/fasyankes');
         $response->assertStatus(200);
         $response->assertSee('Data Fasyankes & Timbulan Limbah B3');
     }
 
     public function test_can_create_new_fasyankes(): void
     {
+        $user = User::first();
         $province = Province::first();
         $regency = $province->regencies->first();
 
@@ -46,7 +49,7 @@ class MasterDataCrudTest extends TestCase
             'daily_generation_kg' => 150.00,
         ];
 
-        $response = $this->post('/fasyankes', $postData);
+        $response = $this->actingAs($user)->post('/fasyankes', $postData);
         $response->assertRedirect('/fasyankes');
 
         $this->assertDatabaseHas('fasyankes', [
@@ -57,14 +60,16 @@ class MasterDataCrudTest extends TestCase
 
     public function test_treatment_facilities_index_displays_data(): void
     {
-        $response = $this->get('/treatment-facilities');
+        $user = User::first();
+        $response = $this->actingAs($user)->get('/treatment-facilities');
         $response->assertStatus(200);
         $response->assertSee('Fasilitas Pengolahan Limbah B3 Berizin');
     }
 
     public function test_transfer_locations_index_displays_data(): void
     {
-        $response = $this->get('/transfer-locations');
+        $user = User::first();
+        $response = $this->actingAs($user)->get('/transfer-locations');
         $response->assertStatus(200);
         $response->assertSee('Lokasi Pemindahan');
     }

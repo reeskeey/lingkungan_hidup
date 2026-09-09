@@ -25,7 +25,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark navbar-gov sticky-top">
         <div class="container-fluid px-3">
             <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-                <div class="bg-white text-success rounded-circle p-2 me-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                <div class="bg-white text-success rounded-circle p-2 me-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px;">
                     <i class="bi bi-shield-check fs-5"></i>
                 </div>
                 <div>
@@ -39,7 +39,8 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarMain">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <!-- Public Links -->
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('/') || request()->is('webgis*') ? 'active' : '' }}" href="{{ url('/webgis') }}">
                             <i class="bi bi-geo-alt-fill me-1 text-warning"></i> Peta Interaktif
@@ -50,9 +51,12 @@
                             <i class="bi bi-bar-chart-line-fill me-1"></i> Dashboard Eksekutif
                         </a>
                     </li>
+
+                    @auth
+                    <!-- Protected Links for Authenticated Users -->
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('gap-analysis*') ? 'active' : '' }}" href="{{ url('/gap-analysis') }}">
-                            <i class="bi bi-pie-chart-fill me-1"></i> Analisis Kesenjangan (Gap)
+                            <i class="bi bi-pie-chart-fill me-1"></i> Analisis Gap
                         </a>
                     </li>
                     <li class="nav-item">
@@ -67,9 +71,46 @@
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                             <li><a class="dropdown-item py-2" href="{{ url('/fasyankes') }}"><i class="bi bi-hospital me-2 text-danger"></i> Data Fasyankes & Timbulan</a></li>
                             <li><a class="dropdown-item py-2" href="{{ url('/treatment-facilities') }}"><i class="bi bi-fire me-2 text-warning"></i> Fasilitas Pengolahan Berizin</a></li>
-                            <li><a class="dropdown-item py-2" href="{{ url('/transfer-locations') }}"><i class="bi bi-box-seam me-2 text-primary"></i> Lokasi Pemindahan (Depo Transfer)</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ url('/transfer-locations') }}"><i class="bi bi-box-seam me-2 text-primary"></i> Lokasi Pemindahan</a></li>
                         </ul>
                     </li>
+
+                    <!-- User Account Dropdown -->
+                    <li class="nav-item dropdown ms-lg-2">
+                        <a class="nav-link dropdown-toggle bg-white bg-opacity-10 rounded px-3 py-1 d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <div class="bg-success text-white rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; font-size: 0.8rem;">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <div class="text-start lh-1">
+                                <div class="small fw-bold text-white">{{ auth()->user()->name }}</div>
+                                <span class="badge bg-warning text-dark mt-1" style="font-size: 0.65rem;">
+                                    {{ auth()->user()->isSuperadmin() ? 'Superadmin KLH' : 'Operator Daerah' }}
+                                </span>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li class="dropdown-header text-muted small">
+                                Signed in as <strong>{{ auth()->user()->email }}</strong>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger py-2">
+                                        <i class="bi bi-box-arrow-right me-2"></i> Keluar (Logout)
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    @else
+                    <!-- Guest Login Button -->
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-sm btn-outline-light px-3 py-1" href="{{ route('login') }}">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Masuk Petugas
+                        </a>
+                    </li>
+                    @endauth
                 </ul>
             </div>
         </div>
