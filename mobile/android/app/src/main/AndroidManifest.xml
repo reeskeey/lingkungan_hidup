@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="id.go.klh.limbah_b3_mobile">
+    package="id.go.klh.mobile">
 
     <!-- Izin Akses Jaringan untuk REST API dan Tile Peta -->
     <uses-permission android:name="android.permission.INTERNET"/>

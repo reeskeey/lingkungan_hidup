@@ -67,10 +67,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         padding: const EdgeInsets.all(16),
                         child: Row(
                           children: [
-                            CircleAvatar(
+                            const CircleAvatar(
                               backgroundColor: AppColors.primary,
                               radius: 24,
-                              child: const Icon(Icons.person, color: Colors.white, size: 28),
+                              child: Icon(Icons.person, color: Colors.white, size: 28),
                             ),
                             const SizedBox(width: 14),
                             Expanded(
