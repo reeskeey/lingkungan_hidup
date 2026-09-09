@@ -1,0 +1,180 @@
+/* WebGIS & Enterprise Government Theme */
+:root {
+    --primary-klh: #1b5e20;
+    --primary-dark: #0f3913;
+    --primary-light: #2e7d32;
+    --secondary-blue: #0d47a1;
+    --accent-gold: #f57f17;
+    --danger-deficit: #c62828;
+    --warning-deficit: #ef6c00;
+    --success-surplus: #2e7d32;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #333333;
+}
+
+/* Navbar */
+.navbar-gov {
+    background: linear-gradient(135deg, #0d3b13 0%, #1b5e20 50%, #0d47a1 100%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-gov .navbar-brand {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #ffffff !important;
+}
+
+.navbar-gov .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.navbar-gov .nav-link:hover,
+.navbar-gov .nav-link.active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Sub-header banner */
+.sub-header-banner {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0.5rem 1rem;
+    font-size: 0.82rem;
+}
+
+/* Map Container */
+.webgis-container {
+    position: relative;
+    height: calc(100vh - 120px);
+    min-height: 600px;
+    width: 100%;
+}
+
+#webgis-map {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+/* Floating Filter Card on Map */
+.map-sidebar-card {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    width: 340px;
+    max-height: calc(100% - 30px);
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Map Legend */
+.map-legend-card {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(6px);
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    font-size: 0.8rem;
+    max-width: 260px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+/* Cards & Statistics */
+.card-kpi {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-kpi:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* Leaflet Custom Popups */
+.leaflet-popup-content-wrapper {
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.25);
+    padding: 4px;
+}
+
+.leaflet-popup-content {
+    margin: 8px 12px;
+    line-height: 1.4;
+    font-size: 0.85rem;
+}
+
+.badge-deficit-kritis {
+    background-color: var(--danger-deficit);
+    color: #ffffff;
+}
+
+.badge-deficit-sedang {
+    background-color: var(--warning-deficit);
+    color: #ffffff;
+}
+
+.badge-surplus {
+    background-color: var(--success-surplus);
+    color: #ffffff;
+}
+
+/* Responsive Table */
+.table-gov thead th {
+    background-color: #f1f4f8;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #dde2e8;
+}
+
+.table-gov tbody td {
+    font-size: 0.88rem;
+    vertical-align: middle;
+}
