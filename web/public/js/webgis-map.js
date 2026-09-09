@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', function () {
         attribution: '&copy; Esri World Imagery'
     });
 
-    // Default base layer
-    cartoPositron.addTo(map);
+    // Default base layer: OpenStreetMap
+    osmLayer.addTo(map);
 
     L.control.layers({
+        "OpenStreetMap (OSM)": osmLayer,
         "Peta Terang (Carto)": cartoPositron,
-        "OpenStreetMap": osmLayer,
         "Citra Satelit (Esri)": esriSatellite
     }, null, { position: 'topright' }).addTo(map);
 

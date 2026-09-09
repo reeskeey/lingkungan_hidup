@@ -144,7 +144,7 @@ class _MobileGisScreenState extends State<MobileGisScreen> {
             children: [
               TileLayer(
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'id.go.klh.limbah_b3_mobile',
+                userAgentPackageName: 'id.go.klh.mobile',
               ),
               MarkerLayer(markers: markers),
             ],
